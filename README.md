@@ -15,11 +15,68 @@ To write a python program for simulating ARP protocols using TCP.
 stored.
 4. Read the IP address which is send by the client.
 5. Map the IP address with its MAC address and return the MAC address to client.
-P
+
 ## PROGRAM - ARP
+SERVER CODE:
+```
+import socket
+s=socket.socket()
+s.bind(('localhost',8000))
+s.listen(5)
+c,addr=s.accept()
+address={"165.165.80.80":"6A:08:AA:C2","165.165.79.1":"8A:BC:E3:FA"};
+while True:
+       ip=c.recv(1024).decode()
+       try:
+          c.send(address[ip].encode())
+       except KeyError:
+          c.send("Not Found".encode())
+```
+CLIENT CODE:
+```
+import socket
+s=socket.socket()
+s.connect(('localhost',8000))
+while True:
+    ip=input("Enter logical Address : ")
+    s.send(ip.encode())
+    print("MAC Address",s.recv(1024).decode())
+```
 ## OUPUT - ARP
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8c3a1352-472b-4378-beea-6f3906c57439" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/04e0ef87-915d-4e48-bb10-8a3f4fe035f4" />
+
+
 ## PROGRAM - RARP
+SERVER CODE:
+```
+import socket
+s=socket.socket()
+s.bind(('localhost',9000))
+s.listen(5)
+c,addr=s.accept()
+address={"6A:08:AA:C2":"192.168.1.100","8A:BC:E3:FA":"192.168.1.99"};
+while True:
+    ip=c.recv(1024).decode()
+    try:
+      c.send(address[ip].encode())
+    except KeyError:
+      c.send("Not Found".encode())
+```
+CLIENT CODE:
+```
+import socket
+s=socket.socket()
+s.connect(('localhost',9000))
+while True:
+   ip=input("Enter MAC Address : ")
+   s.send(ip.encode())
+   print("Logical Address",s.recv(1024).decode())
+```
 ## OUPUT -RARP
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/ca8f2b66-f190-4a32-a989-b1b627d55f47" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/81c347fa-5580-4cd9-a3f3-2f880a37f7a4" />
+
 ## RESULT
 Thus, the python program for simulating ARP protocols using TCP was successfully 
 executed.
